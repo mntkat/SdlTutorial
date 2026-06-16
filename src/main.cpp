@@ -33,18 +33,27 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     
     SDL_Window* window; 
     window = SDL_CreateWindow("SDL Tutorial", 320, 240, SDL_WINDOW_RESIZABLE);
+    
     return  SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppEvent(void * appstate, SDL_Event *event)
 {
+    if (event->type == SDL_EVENT_QUIT)
+    {
+        return SDL_APP_SUCCESS;
+    }
+    else if (event->type == SDL_EVENT_KEY_DOWN)
+    {
+        SDL_Log(" a key was pressed %d", event->key.key);
+    }
     return  SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppIterate(void * appstate)
 {
-    SDL_Delay(5000);
-    return  SDL_APP_SUCCESS;
+    //SDL_Delay(50000);
+    return  SDL_APP_CONTINUE;
 }
 
 void SDL_AppQuit(void * appstate, SDL_AppResult result)
