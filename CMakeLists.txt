@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(SDL3 EXCLUDE_FROM_ALL)
 
 if ( APPLE )
-    add_executable(SdlTutorial MACOSX_BUNDLE src/main.cpp)
+    add_executable(SdlTutorial MACOSX_BUNDLE src/main.cpp src/App.cpp)
 
     set_target_properties(SdlTutorial PROPERTIES
             BUNDLE True
@@ -19,7 +19,7 @@ if ( APPLE )
             MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/cmake/SdlTutorial.plist.in
     )
 else ()
-    add_executable(SdlTutorial src/main.cpp)
+    add_executable(SdlTutorial src/main.cpp src/App.cpp)
 endif ()
 
 target_link_libraries(SdlTutorial PRIVATE SDL3::SDL3)
