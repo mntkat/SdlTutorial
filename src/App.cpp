@@ -118,7 +118,6 @@ void App::onEvent(SDL_Event* event)
     }
 }
 
-
 void App::onUpdate()
 {
 }
