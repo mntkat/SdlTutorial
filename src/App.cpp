@@ -2,18 +2,64 @@
 
 App::App(int argc, char* argv[])
 {
+    running = true;
     std::vector<std::string> args;
     for (int i = 0; i < argc; i++)
     {
         args.push_back(argv[i]);
     }
     initResult = onInit(args);
+    lastTime = 0;
+    fps = 0;
 }
 
+
+void App::quit()
+{
+    running = false;
+}
 
 App::~App()
 {
     onQuit();
+}
+
+int App::mainLoop()
+{
+    Uint64 currentTick = SDL_GetTicks();
+    onTick();
+    SDL_Delay(16);
+    fps++;
+    Uint64 deltaTime = SDL_GetTicks() - currentTick;
+    if (currentTick > lastTime + 1000)
+    {
+        lastTime = currentTick;
+        std::string title = "Fps: " + std::to_string(fps);
+        SDL_SetWindowTitle(window, title.c_str());
+        fps = 0;
+    }
+    
+    if (running == false)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+void App::onTick()
+{
+    onUpdate();
+    onRender();
+}
+
+int App::eventLoop(SDL_Event* event)
+{
+    onEvent(event);
+    if (running == false)
+    {
+        return 1;
+    }
+    return 0;
 }
 
 int App::onInit(std::vector<std::string> args)
@@ -31,12 +77,12 @@ int App::onInit(std::vector<std::string> args)
     return 0;   
 }
 
-int App::onEvent(SDL_Event* event)
+void App::onEvent(SDL_Event* event)
 {
     //SDL_WarpMouseInWindow(window, 320/2, 240/2);
     if (event->type == SDL_EVENT_QUIT)
     {
-        return 1;
+        quit();
     }
     else if (event->type == SDL_EVENT_KEY_DOWN)
     {
@@ -70,13 +116,15 @@ int App::onEvent(SDL_Event* event)
     {
         SDL_Log("SDL_SCANCODE_L key way pressed");
     }
-        
-    return 0;
 }
 
-int App::onUpdate()
+
+void App::onUpdate()
 {
-    return 0;
+}
+
+void App::onRender()
+{
 }
 
 void App::onQuit()

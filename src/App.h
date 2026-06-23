@@ -15,11 +15,27 @@ struct App
     
     ~App();
     
+    bool running = true;
+    
+    Uint64 fps = 0;
+    
+    Uint64 lastTime = 0;
+    
+    void quit();
+    
+    int mainLoop();
+    
+    int eventLoop(SDL_Event *event);
+    
     int onInit(std::vector<std::string> args);
     
-    int onEvent(SDL_Event *event);
+    void onEvent(SDL_Event *event);
     
-    int onUpdate();
+    void onTick();
+    
+    void onUpdate();
+    
+    void onRender();
     
     void onQuit();
 };

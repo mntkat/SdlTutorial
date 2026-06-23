@@ -28,8 +28,17 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     return processResult(app->initResult);
 }
 
-SDL_AppResult SDL_AppEvent(void * appstate, SDL_Event *event) { return processResult(app->onEvent(event)); }
+SDL_AppResult SDL_AppEvent(void * appstate, SDL_Event *event)
+{
+    return processResult(app->eventLoop(event));
+}
 
-SDL_AppResult SDL_AppIterate(void * appstate) { return processResult(app->onUpdate()); }
+SDL_AppResult SDL_AppIterate(void * appstate)
+{
+    return  processResult(app->mainLoop());
+}
 
-void SDL_AppQuit(void * appstate, SDL_AppResult result) { delete app; }
+void SDL_AppQuit(void * appstate, SDL_AppResult result)
+{
+    delete app;
+}
