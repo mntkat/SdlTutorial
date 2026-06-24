@@ -7,6 +7,8 @@ struct App
 {
     const bool* keysstate;
     SDL_Window* window;
+
+    SDL_Surface* surface;
     
     int initResult;
     

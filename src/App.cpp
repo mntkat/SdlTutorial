@@ -72,6 +72,11 @@ int App::onInit(std::vector<std::string> args)
     window = SDL_CreateWindow("SDL Tutorial", 320, 240, SDL_WINDOW_RESIZABLE);
     int w,h;
     SDL_GetWindowSize(window, &w, &w);
+    surface = SDL_LoadBMP("./Untitled.bmp");
+    if (surface == nullptr) {
+        SDL_Log("Failed to load bitmap image");
+        return -1;
+    }
     
     keysstate = SDL_GetKeyboardState(nullptr);
     return 0;   
@@ -124,6 +129,14 @@ void App::onUpdate()
 
 void App::onRender()
 {
+    SDL_Surface* windowSurface = SDL_GetWindowSurface(window);
+    if (nullptr != windowSurface) {
+        bool result = SDL_BlitSurface(surface, nullptr, windowSurface, nullptr);
+        if (!result) {
+            SDL_Log("Render failed");
+        }
+        SDL_UpdateWindowSurface(window);
+    }
 }
 
 void App::onQuit()

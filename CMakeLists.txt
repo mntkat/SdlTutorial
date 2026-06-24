@@ -23,3 +23,5 @@ else ()
 endif ()
 
 target_link_libraries(SdlTutorial PRIVATE SDL3::SDL3)
+
+configure_file(${CMAKE_SOURCE_DIR}/Untitled.bmp ${CMAKE_BINARY_DIR}/Untitled.bmp COPYONLY)
