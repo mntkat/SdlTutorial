@@ -1,12 +1,18 @@
+#pragma once
+
 #include <SDL3/SDL.h>
 #include <iostream>
 #include <string>
 #include <vector>
 
+#include "Particles.h"
+
 struct App
 {
     const bool* keysstate;
     SDL_Window* window;
+    SDL_Renderer* renderer;
+    Particles particles{50};
 
     SDL_Surface* surface;
     

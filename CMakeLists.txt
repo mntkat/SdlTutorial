@@ -19,7 +19,7 @@ if ( APPLE )
             MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/cmake/SdlTutorial.plist.in
     )
 else ()
-    add_executable(SdlTutorial src/main.cpp src/App.cpp)
+    add_executable(SdlTutorial src/main.cpp src/App.cpp src/Particles.cpp)
 endif ()
 
 target_link_libraries(SdlTutorial PRIVATE SDL3::SDL3)

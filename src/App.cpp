@@ -70,8 +70,27 @@ int App::onInit(std::vector<std::string> args)
     }
     
     window = SDL_CreateWindow("SDL Tutorial", 320, 240, SDL_WINDOW_RESIZABLE);
+    renderer = SDL_CreateRenderer(window, nullptr);
+    
+    if (renderer == nullptr) {
+        SDL_Log("Failed to create renderer");
+        return -1;
+    }
+    else
+    {
+        SDL_Log("Renderer: %s", SDL_GetRendererName(renderer));
+        /*
+        SDL_Log("Available renderer drivers:");
+        for (int i = 0; i < SDL_GetNumRenderDrivers(); i++)
+        {
+            SDL_Log("%d, %s,", i + 1, SDL_GetRenderDriver(i));
+        }
+        */
+    }
+    
     int w,h;
     SDL_GetWindowSize(window, &w, &w);
+/*
 #ifdef __APPLE__
     surface = SDL_LoadBMP("../../../Untitled.bmp");
 #else
@@ -82,7 +101,7 @@ int App::onInit(std::vector<std::string> args)
         SDL_Log("Failed to load bitmap image");
         return -1;
     }
-    
+*/    
     keysstate = SDL_GetKeyboardState(nullptr);
     return 0;   
 }
@@ -130,10 +149,16 @@ void App::onEvent(SDL_Event* event)
 
 void App::onUpdate()
 {
+    for (int i = 0; i < particles.particles.size(); i++)
+    {
+        //particles.particles[i].point.x += 0.1f;
+        particles.particles[i].point.y += 0.1f;
+    }
 }
 
 void App::onRender()
 {
+    /*
     SDL_Surface* windowSurface = SDL_GetWindowSurface(window);
     if (nullptr != windowSurface) {
         bool result = SDL_BlitSurface(surface, nullptr, windowSurface, nullptr);
@@ -142,6 +167,26 @@ void App::onRender()
         }
         SDL_UpdateWindowSurface(window);
     }
+    */
+    
+    
+    
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
+    SDL_RenderClear(renderer);
+    
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xff, 0xff);
+    SDL_RenderLine(renderer, 0.f, 0.f, 100.f, 50.f);
+    
+    SDL_FRect rect {
+        .x = 100.f,
+        .y = 50.f,
+        .w = 100.f,
+        .h = 100.f
+    };
+    SDL_RenderRect(renderer, &rect);
+    SDL_RenderPoints(renderer, particles.points().data(), particles.particles.size());
+    
+    SDL_RenderPresent(renderer);
 }
 
 void App::onQuit()
