@@ -12,7 +12,7 @@ struct App
     const bool* keysstate;
     SDL_Window* window;
     SDL_Renderer* renderer;
-    Particles particles{50};
+    Particles particles{1000};
 
     SDL_Surface* surface;
     

@@ -9,6 +9,7 @@ struct Particles
     {
         SDL_FPoint point;
         float speed;
+        float velocity;
     };
     std::vector<Particle> particles;
     
@@ -16,6 +17,8 @@ struct Particles
         for (int i = 0; i < numberOfPoints; i++)
         {
             Particle particle;
+            particle.speed = static_cast<float>(SDL_rand(10));
+            particle.velocity = static_cast<float>(SDL_rand(180));
             particle.point = SDL_FPoint{
                 .x = static_cast<float>(SDL_rand(320)),
                 .y = static_cast<float>(SDL_rand(10))

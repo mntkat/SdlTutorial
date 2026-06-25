@@ -86,6 +86,8 @@ int App::onInit(std::vector<std::string> args)
             SDL_Log("%d, %s,", i + 1, SDL_GetRenderDriver(i));
         }
         */
+        
+        SDL_SetRenderLogicalPresentation(renderer, 320, 240, SDL_LOGICAL_PRESENTATION_STRETCH);
     }
     
     int w,h;
@@ -145,14 +147,29 @@ void App::onEvent(SDL_Event* event)
     {
         SDL_Log("SDL_SCANCODE_L key way pressed");
     }
+#ifdef __APPLE__
+    if (keysstate[SDL_SCANCODE_LGUI] == true && keysstate[SDL_SCANCODE_F] == true)
+    {
+        SDL_Log("SDL_SCANCODE_L key way pressed");
+    }
+#endif
+    
 }
 
 void App::onUpdate()
 {
     for (int i = 0; i < particles.particles.size(); i++)
     {
-        //particles.particles[i].point.x += 0.1f;
-        particles.particles[i].point.y += 0.1f;
+        Particles::Particle particle = particles.particles[i];
+        //particle.point.x += 0.1f;
+        particle.point.y += particle.speed * .1f;
+        particle.point.x += SDL_sinf(particle.velocity) * 2.0f;
+        particle.velocity += 0.2f;
+        if (particle.point.y > 240)
+        {
+            particle.point.y = 0;
+        }
+        particles.particles[i] = particle;
     }
 }
 
