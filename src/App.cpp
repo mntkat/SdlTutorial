@@ -72,7 +72,12 @@ int App::onInit(std::vector<std::string> args)
     window = SDL_CreateWindow("SDL Tutorial", 320, 240, SDL_WINDOW_RESIZABLE);
     int w,h;
     SDL_GetWindowSize(window, &w, &w);
+#ifdef __APPLE__
+    surface = SDL_LoadBMP("../../../Untitled.bmp");
+#else
     surface = SDL_LoadBMP("./Untitled.bmp");
+#endif
+    
     if (surface == nullptr) {
         SDL_Log("Failed to load bitmap image");
         return -1;
