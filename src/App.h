@@ -23,6 +23,8 @@ struct App
     ~App();
     
     bool running = true;
+
+    bool fullscreen = false;
     
     Uint64 fps = 0;
     

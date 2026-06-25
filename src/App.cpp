@@ -118,6 +118,19 @@ void App::onEvent(SDL_Event* event)
     else if (event->type == SDL_EVENT_KEY_DOWN)
     {
         SDL_Log(" a key was pressed %d", event->key.key);
+#ifndef __APPLE__
+        if (event->key.key == SDLK_F11) {
+            fullscreen = !fullscreen;
+            SDL_SetWindowFullscreen(window, fullscreen);
+        }
+#else
+        if (event->key.key == SDLK_F11) {
+            if (keysstate[SDL_SCANCODE_LGUI] == true) {
+                fullscreen = !fullscreen;
+                SDL_SetWindowFullscreen(window, fullscreen);
+            }
+        }
+#endif
     }
     /*else if (event->type == SDL_EVENT_MOUSE_MOTION)
     {
@@ -148,12 +161,12 @@ void App::onEvent(SDL_Event* event)
         SDL_Log("SDL_SCANCODE_L key way pressed");
     }
 #ifdef __APPLE__
-    if (keysstate[SDL_SCANCODE_LGUI] == true && keysstate[SDL_SCANCODE_F] == true)
+    if (keysstate[SDL_SCANCODE_LGUI] == true)
     {
-        SDL_Log("SDL_SCANCODE_L key way pressed");
+        fullscreen = !fullscreen;
+        SDL_SetWindowFullscreen(window, fullscreen);
     }
 #endif
-    
 }
 
 void App::onUpdate()
