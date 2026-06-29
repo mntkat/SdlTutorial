@@ -1,4 +1,6 @@
+#define SDL_FUNCTION_POINTER_IS_VOID_POINTER
 #include "App.h"
+
 
 App::App(int argc, char* argv[])
 {
@@ -28,13 +30,14 @@ int App::mainLoop()
 {
     Uint64 currentTick = SDL_GetTicks();
     onTick();
+    SDL_GL_SwapWindow(window);
     SDL_Delay(16);
     fps++;
     Uint64 deltaTime = SDL_GetTicks() - currentTick;
     if (currentTick > lastTime + 1000)
     {
         lastTime = currentTick;
-        std::string title = "Fps: " + std::to_string(fps);
+        std::string title = "SDL/GL Tutorial - Fps: " + std::to_string(fps);
         SDL_SetWindowTitle(window, title.c_str());
         fps = 0;
     }
@@ -69,8 +72,33 @@ int App::onInit(std::vector<std::string> args)
         return -1;
     }
     
-    window = SDL_CreateWindow("SDL Tutorial", 320, 240, SDL_WINDOW_RESIZABLE);
-    renderer = SDL_CreateRenderer(window, nullptr);
+    window = SDL_CreateWindow("SDL/OpenGL Tutorial", 640, 480, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+    if (window == nullptr) {
+        return -1;
+    }
+    glContext = SDL_GL_CreateContext(window);
+    if (glContext == nullptr) {
+        SDL_Log("Failed to create OpenGL Context");
+        return -1;
+    }
+
+    if (!gladLoadGLLoader(SDL_GL_GetProcAddress)) {
+        SDL_Log("Failed to initialize glad");
+        return -1;
+    }
+
+    getOpenGLVersionInfo();
+
+    //if ()
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 4);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    /*renderer = SDL_CreateRenderer(window, nullptr);
     
     if (renderer == nullptr) {
         SDL_Log("Failed to create renderer");
@@ -79,16 +107,16 @@ int App::onInit(std::vector<std::string> args)
     else
     {
         SDL_Log("Renderer: %s", SDL_GetRendererName(renderer));
-        /*
+        
         SDL_Log("Available renderer drivers:");
         for (int i = 0; i < SDL_GetNumRenderDrivers(); i++)
         {
             SDL_Log("%d, %s,", i + 1, SDL_GetRenderDriver(i));
         }
-        */
+        
         
         SDL_SetRenderLogicalPresentation(renderer, 320, 240, SDL_LOGICAL_PRESENTATION_STRETCH);
-    }
+    }*/
     
     int w,h;
     SDL_GetWindowSize(window, &w, &w);
@@ -106,6 +134,13 @@ int App::onInit(std::vector<std::string> args)
 */    
     keysstate = SDL_GetKeyboardState(nullptr);
     return 0;   
+}
+
+void App::getOpenGLVersionInfo() {
+    SDL_Log("Vendor: %s", glGetString(GL_VENDOR));
+    SDL_Log("Renderer: %s", glGetString(GL_RENDERER));
+    SDL_Log("Version: %s", glGetString(GL_VERSION));
+    SDL_Log("Shading Language: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
 void App::onEvent(SDL_Event* event)
@@ -171,7 +206,7 @@ void App::onEvent(SDL_Event* event)
 
 void App::onUpdate()
 {
-    for (int i = 0; i < particles.particles.size(); i++)
+    /*for (int i = 0; i < particles.particles.size(); i++)
     {
         Particles::Particle particle = particles.particles[i];
         //particle.point.x += 0.1f;
@@ -183,7 +218,7 @@ void App::onUpdate()
             particle.point.y = 0;
         }
         particles.particles[i] = particle;
-    }
+    }*/
 }
 
 void App::onRender()
@@ -200,7 +235,7 @@ void App::onRender()
     */
     
     
-    
+    /*
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
     SDL_RenderClear(renderer);
     
@@ -217,6 +252,7 @@ void App::onRender()
     SDL_RenderPoints(renderer, particles.points().data(), particles.particles.size());
     
     SDL_RenderPresent(renderer);
+    */
 }
 
 void App::onQuit()

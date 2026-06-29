@@ -7,8 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared)
 add_subdirectory(SDL3 EXCLUDE_FROM_ALL)
 
+include_directories(glad/include)
+
 if ( APPLE )
-    add_executable(SdlTutorial MACOSX_BUNDLE src/main.cpp src/App.cpp)
+    add_executable(SdlTutorial MACOSX_BUNDLE src/main.cpp src/App.cpp src/Particles.cpp src/glad.c)
 
     set_target_properties(SdlTutorial PROPERTIES
             BUNDLE True
@@ -19,7 +21,7 @@ if ( APPLE )
             MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/cmake/SdlTutorial.plist.in
     )
 else ()
-    add_executable(SdlTutorial src/main.cpp src/App.cpp src/Particles.cpp)
+    add_executable(SdlTutorial src/main.cpp src/App.cpp src/Particles.cpp src/glad.c)
 endif ()
 
 target_link_libraries(SdlTutorial PRIVATE SDL3::SDL3)
