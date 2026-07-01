@@ -89,6 +89,16 @@ int App::onInit(std::vector<std::string> args)
 
     getOpenGLVersionInfo();
 
+    float positions[6] = {
+        -0.5f, -0.5f,
+        0.0f, 0.5f,
+        0.5f, -0.5f
+    };
+
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+
     //if ()
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
@@ -253,6 +263,12 @@ void App::onRender()
     
     SDL_RenderPresent(renderer);
     */
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    SDL_GL_SwapWindow(window);
 }
 
 void App::onQuit()

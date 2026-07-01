@@ -16,6 +16,8 @@ struct App
     SDL_Window* window;
     SDL_GLContext glContext;
 
+    unsigned int buffer;
+
     /*
     SDL_Renderer* renderer;
     Particles particles{1000};
